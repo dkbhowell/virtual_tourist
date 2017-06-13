@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA32F7E31EF09136005D4794 /* DataResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA32F7E21EF09136005D4794 /* DataResult.swift */; };
+		DA32F7E51EF091B1005D4794 /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA32F7E41EF091B1005D4794 /* AppError.swift */; };
 		DA60846A1EEF63D70032A42C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6084691EEF63D70032A42C /* AppDelegate.swift */; };
 		DA60846C1EEF63D70032A42C /* LocationsMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA60846B1EEF63D70032A42C /* LocationsMapViewController.swift */; };
 		DA60846F1EEF63D70032A42C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA60846D1EEF63D70032A42C /* Main.storyboard */; };
@@ -17,9 +19,14 @@
 		DA6819121EF05EA600656D47 /* UIControl+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6819111EF05EA600656D47 /* UIControl+.swift */; };
 		DA6819141EF06E1400656D47 /* ClosureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6819131EF06E1400656D47 /* ClosureButton.swift */; };
 		DA6819161EF0782C00656D47 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6819151EF0782C00656D47 /* PhotoAlbumViewController.swift */; };
+		DA6819191EF0882B00656D47 /* FlickrClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6819181EF0882B00656D47 /* FlickrClient.swift */; };
+		DA68191B1EF0887500656D47 /* FlickrConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA68191A1EF0887500656D47 /* FlickrConstants.swift */; };
+		DAB7BDEC1EF0AE8100F1CA25 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB7BDEB1EF0AE8100F1CA25 /* ImageCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DA32F7E21EF09136005D4794 /* DataResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataResult.swift; sourceTree = "<group>"; };
+		DA32F7E41EF091B1005D4794 /* AppError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		DA6084661EEF63D70032A42C /* VirtualTourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VirtualTourist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA6084691EEF63D70032A42C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DA60846B1EEF63D70032A42C /* LocationsMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsMapViewController.swift; sourceTree = "<group>"; };
@@ -32,6 +39,9 @@
 		DA6819111EF05EA600656D47 /* UIControl+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+.swift"; sourceTree = "<group>"; };
 		DA6819131EF06E1400656D47 /* ClosureButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosureButton.swift; sourceTree = "<group>"; };
 		DA6819151EF0782C00656D47 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
+		DA6819181EF0882B00656D47 /* FlickrClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrClient.swift; sourceTree = "<group>"; };
+		DA68191A1EF0887500656D47 /* FlickrConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrConstants.swift; sourceTree = "<group>"; };
+		DAB7BDEB1EF0AE8100F1CA25 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +74,8 @@
 		DA6084681EEF63D70032A42C /* VirtualTourist */ = {
 			isa = PBXGroup;
 			children = (
+				DAB7BDED1EF0AE9100F1CA25 /* view */,
+				DA6819171EF0881C00656D47 /* Clients */,
 				DA68190C1EEF6A6300656D47 /* utility */,
 				DA68190B1EEF67F300656D47 /* model controllers */,
 				DA60847C1EEF66330032A42C /* model */,
@@ -106,9 +118,28 @@
 			children = (
 				DA68190F1EEF83D000656D47 /* MapPin.swift */,
 				DA6819111EF05EA600656D47 /* UIControl+.swift */,
-				DA6819131EF06E1400656D47 /* ClosureButton.swift */,
+				DA32F7E21EF09136005D4794 /* DataResult.swift */,
+				DA32F7E41EF091B1005D4794 /* AppError.swift */,
 			);
 			name = utility;
+			sourceTree = "<group>";
+		};
+		DA6819171EF0881C00656D47 /* Clients */ = {
+			isa = PBXGroup;
+			children = (
+				DA6819181EF0882B00656D47 /* FlickrClient.swift */,
+				DA68191A1EF0887500656D47 /* FlickrConstants.swift */,
+			);
+			name = Clients;
+			sourceTree = "<group>";
+		};
+		DAB7BDED1EF0AE9100F1CA25 /* view */ = {
+			isa = PBXGroup;
+			children = (
+				DAB7BDEB1EF0AE8100F1CA25 /* ImageCollectionViewCell.swift */,
+				DA6819131EF06E1400656D47 /* ClosureButton.swift */,
+			);
+			name = view;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -185,11 +216,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA6819101EEF83D000656D47 /* MapPin.swift in Sources */,
+				DA68191B1EF0887500656D47 /* FlickrConstants.swift in Sources */,
 				DA6819161EF0782C00656D47 /* PhotoAlbumViewController.swift in Sources */,
 				DA60846C1EEF63D70032A42C /* LocationsMapViewController.swift in Sources */,
 				DA68190A1EEF67E800656D47 /* UserDefaultsController.swift in Sources */,
 				DA6819121EF05EA600656D47 /* UIControl+.swift in Sources */,
+				DAB7BDEC1EF0AE8100F1CA25 /* ImageCollectionViewCell.swift in Sources */,
+				DA6819191EF0882B00656D47 /* FlickrClient.swift in Sources */,
 				DA60846A1EEF63D70032A42C /* AppDelegate.swift in Sources */,
+				DA32F7E51EF091B1005D4794 /* AppError.swift in Sources */,
+				DA32F7E31EF09136005D4794 /* DataResult.swift in Sources */,
 				DA6819141EF06E1400656D47 /* ClosureButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
