@@ -25,6 +25,7 @@ class LocationsMapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.isHidden = true
         configureMapView()
     }
     
@@ -101,7 +102,12 @@ extension LocationsMapViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        print("Annotation Control Tapped:\n--Annotation: \(view.annotation?.title)\n--Control: \(control)")
+        if (control as? UIButton)?.buttonType == .detailDisclosure {
+            let controller = (self.storyboard?.instantiateViewController(withIdentifier: "PhotoAlbumViewController")) as! PhotoAlbumViewController
+            let pin = (view.annotation as? MapPin)
+            controller.pin = pin
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
 }
 

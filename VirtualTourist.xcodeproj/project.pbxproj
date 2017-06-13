@@ -16,6 +16,7 @@
 		DA6819101EEF83D000656D47 /* MapPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA68190F1EEF83D000656D47 /* MapPin.swift */; };
 		DA6819121EF05EA600656D47 /* UIControl+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6819111EF05EA600656D47 /* UIControl+.swift */; };
 		DA6819141EF06E1400656D47 /* ClosureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6819131EF06E1400656D47 /* ClosureButton.swift */; };
+		DA6819161EF0782C00656D47 /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6819151EF0782C00656D47 /* PhotoAlbumViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		DA68190F1EEF83D000656D47 /* MapPin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapPin.swift; sourceTree = "<group>"; };
 		DA6819111EF05EA600656D47 /* UIControl+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+.swift"; sourceTree = "<group>"; };
 		DA6819131EF06E1400656D47 /* ClosureButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosureButton.swift; sourceTree = "<group>"; };
+		DA6819151EF0782C00656D47 /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,6 +70,7 @@
 				DA60847B1EEF66150032A42C /* storyboards */,
 				DA6084691EEF63D70032A42C /* AppDelegate.swift */,
 				DA60846B1EEF63D70032A42C /* LocationsMapViewController.swift */,
+				DA6819151EF0782C00656D47 /* PhotoAlbumViewController.swift */,
 				DA6084701EEF63D70032A42C /* Assets.xcassets */,
 				DA6084721EEF63D70032A42C /* LaunchScreen.storyboard */,
 				DA6084751EEF63D70032A42C /* Info.plist */,
@@ -182,6 +185,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA6819101EEF83D000656D47 /* MapPin.swift in Sources */,
+				DA6819161EF0782C00656D47 /* PhotoAlbumViewController.swift in Sources */,
 				DA60846C1EEF63D70032A42C /* LocationsMapViewController.swift in Sources */,
 				DA68190A1EEF67E800656D47 /* UserDefaultsController.swift in Sources */,
 				DA6819121EF05EA600656D47 /* UIControl+.swift in Sources */,
