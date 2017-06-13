@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class LocationsMapViewController: UIViewController, MKMapViewDelegate {
+class LocationsMapViewController: UIViewController {
     
     // MARK: Constants
     private let zoomConstant = 1000
@@ -18,14 +18,36 @@ class LocationsMapViewController: UIViewController, MKMapViewDelegate {
     private let kmPerLatitudeDegree = 111.325
     
     // MARK: Properties
-    let userDefaults = UserDefaultsController.shared
+    fileprivate let userDefaults = UserDefaultsController.shared
     
     // MARK: Outlets
     @IBOutlet weak var mapView: MKMapView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        configureMapView()
+    }
+    
+    // MARK: Helper Functions
+    
+    private func configureMapView() {
         mapView.delegate = self
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)) )
+        longPressRecognizer.minimumPressDuration = 1.0
+        mapView.addGestureRecognizer(longPressRecognizer)
+        loadMapRegion()
+    }
+    
+    @objc private func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        if gestureRecognizer.state != .began { return }
+        let touchPoint = gestureRecognizer.location(in: mapView)
+        let touchPointCoord = mapView.convert(touchPoint, toCoordinateFrom: mapView)
+        let mapPin = MapPin(coordinate: touchPointCoord, title: "New Pin")
+        mapView.addAnnotation(mapPin)
+        mapView.selectAnnotation(mapPin, animated: true)
+    }
+    
+    private func loadMapRegion() {
         if let lastRegion = userDefaults.loadRegion() {
             mapView.setRegion(lastRegion, animated: false)
         } else {
@@ -34,18 +56,34 @@ class LocationsMapViewController: UIViewController, MKMapViewDelegate {
         }
     }
     
-    // MARK: Helper Functions
-    
     private func positionMap(lat: Double, lng: Double, zoomLevel: Int = 15, animated: Bool = false) {
         let location = 	CLLocationCoordinate2D(latitude: lat, longitude: lng)
         let region = MKCoordinateRegionMakeWithDistance(location, CLLocationDistance(zoomConstant * zoomLevel), CLLocationDistance(zoomConstant * zoomLevel))
         mapView.setRegion(region, animated: animated)
     }
-    
+}
+
+
+extension LocationsMapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         userDefaults.save(region: mapView.region)
     }
     
-    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        guard let annotation = annotation as? MapPin else {
+            return nil
+        }
+        let identifier = "simplePin"
+        var pinView: MKPinAnnotationView
+        if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
+            dequeuedView.annotation = annotation
+            pinView = dequeuedView
+        } else {
+            pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            pinView.canShowCallout = true
+            pinView.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+        }
+        return pinView
+    }
 }
 

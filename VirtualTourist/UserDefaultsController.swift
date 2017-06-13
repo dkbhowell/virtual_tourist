@@ -24,7 +24,6 @@ class UserDefaultsController {
     }
     
     func save(region: MKCoordinateRegion) {
-        print("Saved region")
         defaults.set(region.center.latitude, forKey: Keys.lastMapLatitude)
         defaults.set(region.center.longitude, forKey: Keys.lastMapLongitude)
         defaults.set(region.span.latitudeDelta, forKey: Keys.lastMapLatDegrees)
@@ -38,10 +37,8 @@ class UserDefaultsController {
             let lngDelt = defaults.value(forKey: Keys.lastMapLngDegrees) as? Double else {
                 return nil
         }
-        print("Loaded region")
         return MKCoordinateRegion(center: CLLocationCoordinate2DMake(lat, lng), span: MKCoordinateSpan(latitudeDelta: latDelt, longitudeDelta: lngDelt))
     }
-    
 }
 
 extension UserDefaultsController {
