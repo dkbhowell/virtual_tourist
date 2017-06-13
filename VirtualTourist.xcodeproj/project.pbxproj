@@ -14,6 +14,8 @@
 		DA6084741EEF63D70032A42C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA6084721EEF63D70032A42C /* LaunchScreen.storyboard */; };
 		DA68190A1EEF67E800656D47 /* UserDefaultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6819091EEF67E800656D47 /* UserDefaultsController.swift */; };
 		DA6819101EEF83D000656D47 /* MapPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA68190F1EEF83D000656D47 /* MapPin.swift */; };
+		DA6819121EF05EA600656D47 /* UIControl+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6819111EF05EA600656D47 /* UIControl+.swift */; };
+		DA6819141EF06E1400656D47 /* ClosureButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6819131EF06E1400656D47 /* ClosureButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		DA6084751EEF63D70032A42C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DA6819091EEF67E800656D47 /* UserDefaultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsController.swift; sourceTree = "<group>"; };
 		DA68190F1EEF83D000656D47 /* MapPin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapPin.swift; sourceTree = "<group>"; };
+		DA6819111EF05EA600656D47 /* UIControl+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIControl+.swift"; sourceTree = "<group>"; };
+		DA6819131EF06E1400656D47 /* ClosureButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClosureButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +102,8 @@
 			isa = PBXGroup;
 			children = (
 				DA68190F1EEF83D000656D47 /* MapPin.swift */,
+				DA6819111EF05EA600656D47 /* UIControl+.swift */,
+				DA6819131EF06E1400656D47 /* ClosureButton.swift */,
 			);
 			name = utility;
 			sourceTree = "<group>";
@@ -178,7 +184,9 @@
 				DA6819101EEF83D000656D47 /* MapPin.swift in Sources */,
 				DA60846C1EEF63D70032A42C /* LocationsMapViewController.swift in Sources */,
 				DA68190A1EEF67E800656D47 /* UserDefaultsController.swift in Sources */,
+				DA6819121EF05EA600656D47 /* UIControl+.swift in Sources */,
 				DA60846A1EEF63D70032A42C /* AppDelegate.swift in Sources */,
+				DA6819141EF06E1400656D47 /* ClosureButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

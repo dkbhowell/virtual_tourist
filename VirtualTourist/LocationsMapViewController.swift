@@ -77,13 +77,31 @@ extension LocationsMapViewController: MKMapViewDelegate {
         var pinView: MKPinAnnotationView
         if let dequeuedView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView {
             dequeuedView.annotation = annotation
+            (dequeuedView.leftCalloutAccessoryView as? ClosureButton)?.touchUpAction = { [weak annotation, weak mapView] in
+                if let annotation = annotation, let mapView = mapView {
+                    mapView.removeAnnotation(annotation)
+                }
+            }
             pinView = dequeuedView
         } else {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             pinView.canShowCallout = true
             pinView.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+            let deleteButton = ClosureButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            deleteButton.backgroundColor = UIColor.red
+            deleteButton.setTitle("X", for: .normal)
+            deleteButton.touchUpAction = { [weak annotation, weak mapView] in
+                if let annotation = annotation, let mapView = mapView {
+                    mapView.removeAnnotation(annotation)
+                }
+            }
+            pinView.leftCalloutAccessoryView = deleteButton
         }
         return pinView
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        print("Annotation Control Tapped:\n--Annotation: \(view.annotation?.title)\n--Control: \(control)")
     }
 }
 
