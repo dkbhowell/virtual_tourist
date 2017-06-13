@@ -12,6 +12,7 @@
 		DA60846F1EEF63D70032A42C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA60846D1EEF63D70032A42C /* Main.storyboard */; };
 		DA6084711EEF63D70032A42C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DA6084701EEF63D70032A42C /* Assets.xcassets */; };
 		DA6084741EEF63D70032A42C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DA6084721EEF63D70032A42C /* LaunchScreen.storyboard */; };
+		DA68190A1EEF67E800656D47 /* UserDefaultsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6819091EEF67E800656D47 /* UserDefaultsController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		DA6084701EEF63D70032A42C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DA6084731EEF63D70032A42C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DA6084751EEF63D70032A42C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DA6819091EEF67E800656D47 /* UserDefaultsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,8 @@
 		DA6084681EEF63D70032A42C /* VirtualTourist */ = {
 			isa = PBXGroup;
 			children = (
+				DA68190C1EEF6A6300656D47 /* utility */,
+				DA68190B1EEF67F300656D47 /* model controllers */,
 				DA60847C1EEF66330032A42C /* model */,
 				DA60847B1EEF66150032A42C /* storyboards */,
 				DA6084691EEF63D70032A42C /* AppDelegate.swift */,
@@ -78,6 +82,21 @@
 			children = (
 			);
 			name = model;
+			sourceTree = "<group>";
+		};
+		DA68190B1EEF67F300656D47 /* model controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DA6819091EEF67E800656D47 /* UserDefaultsController.swift */,
+			);
+			name = "model controllers";
+			sourceTree = "<group>";
+		};
+		DA68190C1EEF6A6300656D47 /* utility */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = utility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,6 +173,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA60846C1EEF63D70032A42C /* LocationsMapViewController.swift in Sources */,
+				DA68190A1EEF67E800656D47 /* UserDefaultsController.swift in Sources */,
 				DA60846A1EEF63D70032A42C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -320,6 +340,7 @@
 				DA60847A1EEF63D70032A42C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
