@@ -11,6 +11,9 @@ import MapKit
 
 class PhotoAlbumViewController: UIViewController {
     
+    // MARK: Constants
+    private let maxPhotos = 100
+    
     // MARK: Properties
     var pin: MapPin!
     var imageUrls = [URL]() {
@@ -23,17 +26,15 @@ class PhotoAlbumViewController: UIViewController {
     }
     var images = [UIImage]() {
         didSet {
-            useUrlCountForPlaceholder = false
+            imagesAvailable = true
             executeOnMain {
                 print("Reloading collection view from images didSet")
-                self.removeAllActivityIndicators()
                 self.collectionView.reloadData()
             }
         }
     }
-    var useUrlCountForPlaceholder = true
     
-    var activityIndicators = [UIActivityIndicatorView]()
+    var imagesAvailable = false
     
     // MARK: Outlets
     @IBOutlet weak var mapView: MKMapView!
@@ -55,7 +56,7 @@ class PhotoAlbumViewController: UIViewController {
             case .success(let urls):
                 print("Successfully retreived \(urls.count) image URLs")
                 self.imageUrls = urls
-                self.images = self.downloadImages(urls: urls)
+                self.images = self.downloadImages(urls: urls, maxCount: self.maxPhotos)
             case .failure(let error):
                 print(error)
             }
@@ -96,7 +97,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count = useUrlCountForPlaceholder ? imageUrls.count : images.count
+        let count = imagesAvailable ? images.count : imageUrls.count
         print("numberOfItemsInSection: \(count)")
         return count
     }
@@ -106,43 +107,12 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentefier, for: indexPath) as! ImageCollectionViewCell
         cell.backgroundColor = UIColor.lightGray
         
-        if useUrlCountForPlaceholder {
-            cell.imageView.image = nil
-            let indicator = showActivityIndicator(onView: cell.imageView, withColor: .black, isLarge: true)
-            activityIndicators.append(indicator)
-            print("Added spinner to ImageView")
-        } else {
+        if imagesAvailable {
             let image = images[indexPath.row]
-            cell.imageView.image = image
-            cell.imageView.alpha = 1
-            print("Added image to ImageView")
+            cell.configureWithImage(image: image)
+        } else {
+            cell.configureWithImage(image: nil)
         }
         return cell
-    }
-}
-
-extension PhotoAlbumViewController {
-    fileprivate func showActivityIndicator(onView view: UIView, withColor color: UIColor = UIColor.black, isLarge: Bool = true) -> UIActivityIndicatorView {
-        let halfx = view.bounds.width / 2
-        let halfy = view.bounds.height / 2
-        let lesserLength = min(halfx, halfy)
-        let activityIndicator = UIActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: lesserLength, height: lesserLength))
-        activityIndicator.activityIndicatorViewStyle = isLarge ? .whiteLarge : .white
-        activityIndicator.color = color
-        executeOnMain {
-            view.alpha = 0.3
-            view.addSubview(activityIndicator)
-            view.bringSubview(toFront: activityIndicator)
-            activityIndicator.center = CGPoint(x: halfx, y: halfy)
-            activityIndicator.startAnimating()
-        }
-        return activityIndicator
-    }
-    
-    fileprivate func removeAllActivityIndicators() {
-        for actInd in activityIndicators {
-            actInd.removeFromSuperview()
-        }
-        activityIndicators.removeAll(keepingCapacity: false)
     }
 }
