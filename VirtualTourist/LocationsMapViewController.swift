@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import CoreData
 
 class LocationsMapViewController: UIViewController {
     
@@ -20,6 +21,7 @@ class LocationsMapViewController: UIViewController {
     
     // MARK: Properties
     fileprivate let userDefaults = UserDefaultsController.shared
+    private let dataController = (UIApplication.shared.delegate as! AppDelegate).dataController
     
     // MARK: Outlets
     @IBOutlet weak var mapView: MKMapView!
@@ -38,13 +40,15 @@ class LocationsMapViewController: UIViewController {
         longPressRecognizer.minimumPressDuration = 1.0
         mapView.addGestureRecognizer(longPressRecognizer)
         loadMapRegion()
+        loadPins()
     }
     
     @objc private func handleLongPress(_ gestureRecognizer: UILongPressGestureRecognizer) {
         if gestureRecognizer.state != .began { return }
         let touchPoint = gestureRecognizer.location(in: mapView)
         let touchPointCoord = mapView.convert(touchPoint, toCoordinateFrom: mapView)
-        let mapPin = MapPin(coordinate: touchPointCoord, title: "New Pin")
+        let mapPin = Pin(coordinate: touchPointCoord, title: "New Location", subtitle: "Tap for Pics!", context: dataController.viewContext)
+        dataController.saveContext()
         mapView.addAnnotation(mapPin)
         mapView.selectAnnotation(mapPin, animated: true)
         
@@ -60,7 +64,21 @@ class LocationsMapViewController: UIViewController {
                 }else {
                     mapPin.title = "Unknown Place"
                 }
+                self.dataController.saveContext()
             }
+        }
+    }
+    
+    private func loadPins() {
+        let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
+        do {
+            let fetchedPins = try dataController.viewContext.fetch(fetchRequest)
+            for pin in fetchedPins {
+                mapView.addAnnotation(pin)
+            }
+            mapView.showAnnotations(fetchedPins, animated: true)
+        } catch {
+            fatalError("Failed fetch request for Pin entity")
         }
     }
     
