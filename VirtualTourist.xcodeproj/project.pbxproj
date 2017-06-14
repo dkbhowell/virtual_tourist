@@ -22,6 +22,7 @@
 		DA6819191EF0882B00656D47 /* FlickrClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA6819181EF0882B00656D47 /* FlickrClient.swift */; };
 		DA68191B1EF0887500656D47 /* FlickrConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA68191A1EF0887500656D47 /* FlickrConstants.swift */; };
 		DAB7BDEC1EF0AE8100F1CA25 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB7BDEB1EF0AE8100F1CA25 /* ImageCollectionViewCell.swift */; };
+		DAB7BDEF1EF0B31300F1CA25 /* UIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB7BDEE1EF0B31300F1CA25 /* UIUtil.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		DA6819181EF0882B00656D47 /* FlickrClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrClient.swift; sourceTree = "<group>"; };
 		DA68191A1EF0887500656D47 /* FlickrConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrConstants.swift; sourceTree = "<group>"; };
 		DAB7BDEB1EF0AE8100F1CA25 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		DAB7BDEE1EF0B31300F1CA25 /* UIUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIUtil.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 		DA68190C1EEF6A6300656D47 /* utility */ = {
 			isa = PBXGroup;
 			children = (
+				DAB7BDEE1EF0B31300F1CA25 /* UIUtil.swift */,
 				DA68190F1EEF83D000656D47 /* MapPin.swift */,
 				DA6819111EF05EA600656D47 /* UIControl+.swift */,
 				DA32F7E21EF09136005D4794 /* DataResult.swift */,
@@ -226,6 +229,7 @@
 				DA60846A1EEF63D70032A42C /* AppDelegate.swift in Sources */,
 				DA32F7E51EF091B1005D4794 /* AppError.swift in Sources */,
 				DA32F7E31EF09136005D4794 /* DataResult.swift in Sources */,
+				DAB7BDEF1EF0B31300F1CA25 /* UIUtil.swift in Sources */,
 				DA6819141EF06E1400656D47 /* ClosureButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
