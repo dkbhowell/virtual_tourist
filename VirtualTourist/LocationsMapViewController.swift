@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
 class LocationsMapViewController: UIViewController {
     
@@ -46,6 +47,21 @@ class LocationsMapViewController: UIViewController {
         let mapPin = MapPin(coordinate: touchPointCoord, title: "New Pin")
         mapView.addAnnotation(mapPin)
         mapView.selectAnnotation(mapPin, animated: true)
+        
+        let location = CLLocation(latitude: touchPointCoord.latitude, longitude: touchPointCoord.longitude)
+        CLGeocoder().reverseGeocodeLocation(location) { (placemark, error) in
+            if let error = error {
+                print("Error with reverse geocode: \(error)")
+            }
+            if let placemark = placemark?.first {
+                print("Successful reverse geocode: \(placemark)")
+                if let placeTitle = placemark.locality {
+                    mapPin.title = placeTitle
+                }else {
+                    mapPin.title = "Unknown Place"
+                }
+            }
+        }
     }
     
     private func loadMapRegion() {
