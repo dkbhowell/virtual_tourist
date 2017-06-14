@@ -104,7 +104,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentefier, for: indexPath) as! ImageCollectionViewCell
-        cell.backgroundColor = UIColor.blue
+        cell.backgroundColor = UIColor.lightGray
         
         if useUrlCountForPlaceholder {
             cell.imageView.image = nil
