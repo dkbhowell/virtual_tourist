@@ -21,7 +21,7 @@ class LocationsMapViewController: UIViewController {
     
     // MARK: Properties
     fileprivate let userDefaults = UserDefaultsController.shared
-    private let dataController = (UIApplication.shared.delegate as! AppDelegate).dataController
+    fileprivate let dataController = (UIApplication.shared.delegate as! AppDelegate).dataController
     
     // MARK: Outlets
     @IBOutlet weak var mapView: MKMapView!
@@ -115,6 +115,8 @@ extension LocationsMapViewController: MKMapViewDelegate {
             (dequeuedView.leftCalloutAccessoryView as? ClosureButton)?.touchUpAction = { [weak annotation, weak mapView] in
                 if let annotation = annotation, let mapView = mapView {
                     mapView.removeAnnotation(annotation)
+                    self.dataController.viewContext.delete(annotation)
+                    self.dataController.saveContext()
                 }
             }
             pinView = dequeuedView
@@ -128,6 +130,8 @@ extension LocationsMapViewController: MKMapViewDelegate {
             deleteButton.touchUpAction = { [weak annotation, weak mapView] in
                 if let annotation = annotation, let mapView = mapView {
                     mapView.removeAnnotation(annotation)
+                    self.dataController.viewContext.delete(annotation)
+                    self.dataController.saveContext()
                 }
             }
             pinView.leftCalloutAccessoryView = deleteButton
