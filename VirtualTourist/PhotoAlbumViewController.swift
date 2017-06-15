@@ -53,7 +53,7 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var titleLabel: UILabel!
     
-
+    // MARK: VC Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = false
@@ -75,11 +75,18 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
             print("No images in DB -- fetching from Flickr")
             getImagesFromFlickr()
         }
-        
-//        if !hasData {
-//            print("DB Miss -- Downlaoding images from Flickr...")
-//            getImagesFromFlickr()
-//        }
+    }
+    
+    // MARK: Actions
+    @IBAction func newCollectionTapped(_ sender: Any) {
+        print("Fetching new collection of photos for pin...")
+        // Remove all photos from UI
+        images.removeAll()
+        imageUrls.removeAll()
+        // Delete all photos from DB
+        deleteAllPhotos()
+        // Fetch new photos
+        getImagesFromFlickr()
     }
     
     // MARK: ImageDownloaderDelegate
@@ -133,6 +140,25 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
             fatalError("Core Data: Error fetching a photo from the database")
         }
         return false
+    }
+    
+    private func getImagesInDatabase() -> [Photo] {
+        let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+        let predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
+        fetchRequest.predicate = predicate
+        do {
+            return try dataController.viewContext.fetch(fetchRequest)
+        } catch {
+            fatalError("Core Data: Error fetching photo from the database")
+        }
+    }
+    
+    private func deleteAllPhotos() {
+        let photos = getImagesInDatabase()
+        for photo in photos {
+            dataController.viewContext.delete(photo)
+        }
+        dataController.saveContext()
     }
     
     private func getDownloadedImages() {

@@ -114,6 +114,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ku7-P4-t7j">
                                         <rect key="frame" x="0.0" y="548" width="343" height="99"/>
                                         <state key="normal" title="New Collection"/>
+                                        <connections>
+                                            <action selector="newCollectionTapped:" destination="NbV-NM-Fit" eventType="touchUpInside" id="W66-QS-Ruc"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
