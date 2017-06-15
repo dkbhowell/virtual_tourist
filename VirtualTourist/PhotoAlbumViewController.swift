@@ -9,13 +9,23 @@
 import UIKit
 import MapKit
 
-class PhotoAlbumViewController: UIViewController {
+class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate {
     
     // MARK: Constants
     private let maxPhotos = 100
     
     // MARK: Properties
-    var pin: MapPin!
+    var pin: Pin!
+    let imageDownloader = ImageDownloader()
+    
+    var urlsAndImages: [Any] {
+        let imageCount = images.count
+        let urlsAsAny = imageUrls as [Any]
+        let imagesAsAny = images as [Any]
+        let imageURLsShortened = urlsAsAny.dropFirst(imageCount)
+        return imagesAsAny + imageURLsShortened
+    }
+    
     var imageUrls = [URL]() {
         didSet {
             print("Reloading collection view from imageUrl didSet")
@@ -45,6 +55,7 @@ class PhotoAlbumViewController: UIViewController {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = false
         collectionView.dataSource = self
+        imageDownloader.delegate = self
         
         print("Selecting pin")
         mapView.addAnnotation(pin)
@@ -56,36 +67,20 @@ class PhotoAlbumViewController: UIViewController {
             case .success(let urls):
                 print("Successfully retreived \(urls.count) image URLs")
                 self.imageUrls = urls
-                self.images = self.downloadImages(urls: urls, maxCount: self.maxPhotos)
+                self.imageDownloader.downloadImages(urls: urls)
             case .failure(let error):
                 print(error)
             }
         }
     }
     
-    // MARK: Helper Methods
-    
-    private func downloadImages(urls: [URL], maxCount: Int? = nil) -> [UIImage] {
-        var images = [UIImage]()
-        var count = 0
-        for url in urls {
-            let data = try? Data(contentsOf: url)
-            guard let imageData = data else {
-                continue
-            }
-            let imageOpt = UIImage(data: imageData)
-            guard let image = imageOpt else {
-                continue
-            }
-            images.append(image)
-            count += 1
-            if let max = maxCount, count >= max  {
-                break
-            }
-        }
-        print("retrieved \(images.count) images")
-        return images
+    // MARK: ImageDownloaderDelegate
+    func downloader(_ downloader: ImageDownloader, didDownloadImage image: UIImage) {
+        print("Image Downloaded")
+        images.append(image)
     }
+    
+    // MARK: Helper Methods
 
 }
 
@@ -97,7 +92,8 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count = imagesAvailable ? images.count : imageUrls.count
+        let count = urlsAndImages.count
+//        let count = imagesAvailable ? images.count : imageUrls.count
         print("numberOfItemsInSection: \(count)")
         return count
     }
@@ -107,10 +103,11 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentefier, for: indexPath) as! ImageCollectionViewCell
         cell.backgroundColor = UIColor.lightGray
         
-        if imagesAvailable {
-            let image = images[indexPath.row]
+        let imageOrUrl = urlsAndImages[indexPath.row]
+        switch imageOrUrl {
+        case let image as UIImage:
             cell.configureWithImage(image: image)
-        } else {
+        default:
             cell.configureWithImage(image: nil)
         }
         return cell

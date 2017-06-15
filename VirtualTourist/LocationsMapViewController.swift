@@ -105,7 +105,7 @@ extension LocationsMapViewController: MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        guard let annotation = annotation as? MapPin else {
+        guard let annotation = annotation as? Pin else {
             return nil
         }
         let identifier = "simplePin"
@@ -138,7 +138,7 @@ extension LocationsMapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if (control as? UIButton)?.buttonType == .detailDisclosure {
             let controller = (self.storyboard?.instantiateViewController(withIdentifier: "PhotoAlbumViewController")) as! PhotoAlbumViewController
-            let pin = (view.annotation as? MapPin)
+            let pin = (view.annotation as? Pin)
             controller.pin = pin
             self.navigationController?.pushViewController(controller, animated: true)
         }
