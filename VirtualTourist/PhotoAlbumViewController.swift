@@ -63,7 +63,6 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
         
         titleLabel.text = pin.title
         
-        print("Selecting pin")
         mapView.addAnnotation(pin)
         mapView.showAnnotations([pin], animated: true)
         
@@ -75,7 +74,23 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
             print("No images in DB -- fetching from Flickr")
             getImagesFromFlickr()
         }
+//        configCollectionView()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+//        configCollectionView()
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        configCollectionView()
+    }
+    
+//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+//        print("ViewWillTransitionToSize")
+////        configCollectionView()
+//        collectionView.collectionViewLayout.invalidateLayout()
+//    }
     
     // MARK: Actions
     @IBAction func newCollectionTapped(_ sender: Any) {
@@ -107,6 +122,22 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
     }
     
     // MARK: Helper Methods
+    
+    private func configCollectionView() {
+        guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
+            return
+        }
+        let orientation = UIApplication.shared.statusBarOrientation
+        let numItemsPerRow: CGFloat = orientation == .portrait ? 2 : 4
+        let itemSpacing: CGFloat = 5
+        let lineSpacing: CGFloat = 5
+        let width = collectionView.frame.width
+        let computedWidth = width - (numItemsPerRow - 1) * itemSpacing
+        flowLayout.itemSize = CGSize(width: computedWidth/numItemsPerRow, height: computedWidth/numItemsPerRow)
+        flowLayout.minimumInteritemSpacing = itemSpacing
+        flowLayout.minimumLineSpacing = lineSpacing
+        flowLayout.invalidateLayout()
+    }
     
     private func getImagesFromFlickr() {
         let flickrClient = FlickrClient.shared
