@@ -84,6 +84,13 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         configCollectionView()
+        toggleMapView()
+    }
+    
+    private func toggleMapView() {
+        let isPortrait = UIApplication.shared.statusBarOrientation == .portrait
+        mapView.isHidden = isPortrait ? false : true
+        self.navigationController?.navigationBar.isHidden = isPortrait ? false : true
     }
     
 //    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -128,7 +135,7 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
             return
         }
         let orientation = UIApplication.shared.statusBarOrientation
-        let numItemsPerRow: CGFloat = orientation == .portrait ? 2 : 4
+        let numItemsPerRow: CGFloat = orientation == .portrait ? 2 : 3
         let itemSpacing: CGFloat = 5
         let lineSpacing: CGFloat = 5
         let width = collectionView.frame.width
