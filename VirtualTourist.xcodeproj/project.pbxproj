@@ -23,6 +23,7 @@
 		DA68191B1EF0887500656D47 /* FlickrConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA68191A1EF0887500656D47 /* FlickrConstants.swift */; };
 		DAB3CFF01EF3223200CE1336 /* ImageCreator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB3CFEE1EF3223200CE1336 /* ImageCreator.swift */; };
 		DAB3CFF11EF3223200CE1336 /* ImageCreatorDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB3CFEF1EF3223200CE1336 /* ImageCreatorDelegate.swift */; };
+		DAB3CFF31EF34F6E00CE1336 /* Collection+.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB3CFF21EF34F6E00CE1336 /* Collection+.swift */; };
 		DAB7BDEC1EF0AE8100F1CA25 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB7BDEB1EF0AE8100F1CA25 /* ImageCollectionViewCell.swift */; };
 		DAB7BDEF1EF0B31300F1CA25 /* UIUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAB7BDEE1EF0B31300F1CA25 /* UIUtil.swift */; };
 		DAB7BDF21EF1DAE400F1CA25 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DAB7BDF01EF1DAE400F1CA25 /* Model.xcdatamodeld */; };
@@ -52,6 +53,7 @@
 		DA68191A1EF0887500656D47 /* FlickrConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrConstants.swift; sourceTree = "<group>"; };
 		DAB3CFEE1EF3223200CE1336 /* ImageCreator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCreator.swift; sourceTree = "<group>"; };
 		DAB3CFEF1EF3223200CE1336 /* ImageCreatorDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCreatorDelegate.swift; sourceTree = "<group>"; };
+		DAB3CFF21EF34F6E00CE1336 /* Collection+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Collection+.swift"; sourceTree = "<group>"; };
 		DAB7BDEB1EF0AE8100F1CA25 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		DAB7BDEE1EF0B31300F1CA25 /* UIUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIUtil.swift; sourceTree = "<group>"; };
 		DAB7BDF11EF1DAE400F1CA25 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				DA32F7E41EF091B1005D4794 /* AppError.swift */,
 				DAD750C51EF20609000BB14A /* ImageDownloader.swift */,
 				DAD750C71EF20622000BB14A /* ImageDownloaderDelegate.swift */,
+				DAB3CFF21EF34F6E00CE1336 /* Collection+.swift */,
 			);
 			name = utility;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 				DAD750C81EF20622000BB14A /* ImageDownloaderDelegate.swift in Sources */,
 				DA60846C1EEF63D70032A42C /* LocationsMapViewController.swift in Sources */,
 				DA68190A1EEF67E800656D47 /* UserDefaultsController.swift in Sources */,
+				DAB3CFF31EF34F6E00CE1336 /* Collection+.swift in Sources */,
 				DAD750C41EF20058000BB14A /* Pin+CoreDataProperties.swift in Sources */,
 				DA6819121EF05EA600656D47 /* UIControl+.swift in Sources */,
 				DAB7BDEC1EF0AE8100F1CA25 /* ImageCollectionViewCell.swift in Sources */,

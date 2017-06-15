@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, ImageCreatorDelegate {
+class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, ImageCreatorDelegate, UICollectionViewDelegate {
     // MARK: Constants
     private let maxPhotos = 100
     
@@ -20,33 +20,14 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
     let imageCreator = ImageCreator()
     let dataController = (UIApplication.shared.delegate as! AppDelegate).dataController
     
-    var urlsAndImages: [Any] {
-        let imageCount = images.count
-        let urlsAsAny = imageUrls as [Any]
-        let imagesAsAny = images as [Any]
-        let imageURLsShortened = urlsAsAny.dropFirst(imageCount)
-        return imagesAsAny + imageURLsShortened
-    }
-    
-    var imageUrls = [URL]() {
+    var images = [UIImage?]() {
         didSet {
-//            print("Reloading collection view from imageUrl didSet")
             executeOnMain {
+                //                print("Reloading collection view from images didSet")
                 self.collectionView.reloadData()
             }
         }
     }
-    var images = [UIImage]() {
-        didSet {
-            imagesAvailable = true
-            executeOnMain {
-//                print("Reloading collection view from images didSet")
-                self.collectionView.reloadData()
-            }
-        }
-    }
-    
-    var imagesAvailable = false
     
     // MARK: Outlets
     @IBOutlet weak var mapView: MKMapView!
@@ -104,7 +85,6 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
         print("Fetching new collection of photos for pin...")
         // Remove all photos from UI
         images.removeAll()
-        imageUrls.removeAll()
         // Delete all photos from DB
         deleteAllPhotos()
         // Fetch new photos
@@ -114,7 +94,8 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
     // MARK: ImageDownloaderDelegate
     func downloader(_ downloader: ImageDownloader, didDownloadImage image: UIImage) {
         print("Image Downloaded")
-        images.append(image)
+        images.insert(image, at: 0)
+        images.remove(at: images.endIndex-1)
         // associate with pin
         let data = UIImagePNGRepresentation(image)!
         let imageObject = NSEntityDescription.insertNewObject(forEntityName: "Photo", into: dataController.viewContext) as! Photo
@@ -126,6 +107,14 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
     // MARK: ImageCreatorDelegate (from DB)
     func creator(_ creator: ImageCreator, didCreateImage image: UIImage) {
         images.append(image)
+    }
+    
+    // MARK: UICollectionViewDelegate 
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let photo = images[safe: indexPath.row] as? Photo else {
+            print("Selected photo does not exist in array")
+            return
+        }
     }
     
     // MARK: Helper Methods
@@ -152,7 +141,7 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
             switch result {
             case .success(let urls):
                 print("Successfully retreived \(urls.count) image URLs")
-                self.imageUrls = urls
+                self.images = [UIImage?](repeating: nil, count: urls.count)
                 self.imageDownloader.downloadImages(urls: urls)
             case .failure(let error):
                 print(error)
@@ -275,7 +264,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count = urlsAndImages.count
+        let count = images.count
 //        let count = imagesAvailable ? images.count : imageUrls.count
         print("numberOfItemsInSection: \(count)")
         return count
@@ -286,11 +275,9 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentefier, for: indexPath) as! ImageCollectionViewCell
         cell.backgroundColor = UIColor.lightGray
         
-        let imageOrUrl = urlsAndImages[indexPath.row]
-        switch imageOrUrl {
-        case let image as UIImage:
+        if let image = images[safe: indexPath.row] {
             cell.configureWithImage(image: image)
-        default:
+        } else {
             cell.configureWithImage(image: nil)
         }
         return cell
