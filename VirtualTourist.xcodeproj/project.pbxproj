@@ -88,6 +88,7 @@
 		DA6084681EEF63D70032A42C /* VirtualTourist */ = {
 			isa = PBXGroup;
 			children = (
+				DAB3CFED1EF220B400CE1336 /* Controllers */,
 				DAB7BDED1EF0AE9100F1CA25 /* view */,
 				DA6819171EF0881C00656D47 /* Clients */,
 				DA68190C1EEF6A6300656D47 /* utility */,
@@ -95,8 +96,6 @@
 				DA60847C1EEF66330032A42C /* model */,
 				DA60847B1EEF66150032A42C /* storyboards */,
 				DA6084691EEF63D70032A42C /* AppDelegate.swift */,
-				DA60846B1EEF63D70032A42C /* LocationsMapViewController.swift */,
-				DA6819151EF0782C00656D47 /* PhotoAlbumViewController.swift */,
 				DA6084701EEF63D70032A42C /* Assets.xcassets */,
 				DA6084721EEF63D70032A42C /* LaunchScreen.storyboard */,
 				DA6084751EEF63D70032A42C /* Info.plist */,
@@ -152,6 +151,15 @@
 				DA68191A1EF0887500656D47 /* FlickrConstants.swift */,
 			);
 			name = Clients;
+			sourceTree = "<group>";
+		};
+		DAB3CFED1EF220B400CE1336 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DA60846B1EEF63D70032A42C /* LocationsMapViewController.swift */,
+				DA6819151EF0782C00656D47 /* PhotoAlbumViewController.swift */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 		DAB7BDED1EF0AE9100F1CA25 /* view */ = {

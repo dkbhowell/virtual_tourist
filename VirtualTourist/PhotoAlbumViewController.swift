@@ -63,11 +63,13 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate {
         mapView.addAnnotation(pin)
         mapView.showAnnotations([pin], animated: true)
         
+        print("Checking DB for Images")
         getDownloadedImages()
         
-        if images.count < 1 {
-            getImagesFromFlickr()
-        }
+//        if !hasData {
+//            print("DB Miss -- Downlaoding images from Flickr...")
+//            getImagesFromFlickr()
+//        }
     }
     
     // MARK: ImageDownloaderDelegate
@@ -102,22 +104,33 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate {
         let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
         let predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
         fetchRequest.predicate = predicate
+        let asyncFetch = NSAsynchronousFetchRequest(fetchRequest: fetchRequest) { (fetchResult) in
+            executeOnMain {
+                guard let photos = fetchResult.finalResult, photos.count > 0 else {
+                    print("Async Fetch: No results")
+                    return
+                }
+                self.processDbImages(photos: photos)
+            }
+        }
         do {
-            let fetchedPhotos = try dataController.viewContext.fetch(fetchRequest)
-            guard fetchedPhotos.count > 0 else {
-                return
-            }
-            var count = 0
-            for photo in fetchedPhotos {
-                let data = photo.image! as Data
-                let image = UIImage(data: data)!
-                self.images.append(image)
-                count += 1
-            }
-            print("Loaded \(count) images from the DB")
+            let fetchedPhotosResult = try dataController.viewContext.execute(asyncFetch)
+            print("FetchedPhotosResult Immediately After: \(fetchedPhotosResult)")
         } catch {
             fatalError("Core Data: Error fetching a photo from the database")
         }
+    }
+    
+    private func processDbImages(photos: [Photo]) {
+        print("DB Hit -- loading Images from DB")
+        var count = 0
+        for photo in photos {
+            let data = photo.image! as Data
+            let image = UIImage(data: data)!
+            self.images.append(image)
+            count += 1
+        }
+        print("Loaded \(count) images from the DB")
     }
 }
 
