@@ -64,7 +64,11 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate {
         mapView.showAnnotations([pin], animated: true)
         
         print("Checking DB for Images")
-        getDownloadedImages()
+        if doImagesExistInDb() {
+            getDownloadedImages()
+        } else {
+            getImagesFromFlickr()
+        }
         
 //        if !hasData {
 //            print("DB Miss -- Downlaoding images from Flickr...")
@@ -100,17 +104,42 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate {
         }
     }
     
+    private func doImagesExistInDb() -> Bool {
+        let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+        let predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
+        fetchRequest.predicate = predicate
+        fetchRequest.fetchLimit = 1
+        let timeStart = Date()
+        do {
+            let fetchedResult = try dataController.viewContext.fetch(fetchRequest)
+            let timeEnd = Date()
+            print("Time Elapsed for Quick DB: \(timeEnd.timeIntervalSince(timeStart))")
+            if fetchedResult.count > 0 {
+                return true
+            }
+            
+        } catch {
+            fatalError("Core Data: Error fetching a photo from the database")
+        }
+        return false
+    }
+    
     private func getDownloadedImages() {
         let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
         let predicate = NSPredicate(format: "pin = %@", argumentArray: [pin])
         fetchRequest.predicate = predicate
+        let timeStart = Date()
         let asyncFetch = NSAsynchronousFetchRequest(fetchRequest: fetchRequest) { (fetchResult) in
             executeOnMain {
                 guard let photos = fetchResult.finalResult, photos.count > 0 else {
                     print("Async Fetch: No results")
                     return
                 }
+                let timeAfterDB = Date()
                 self.processDbImages(photos: photos)
+                let timeAfterProcess = Date()
+                print("Time for DB Access: \(timeAfterDB.timeIntervalSince(timeStart))")
+                print("Time for Image Processing: \(timeAfterProcess.timeIntervalSince(timeAfterDB))")
             }
         }
         do {
