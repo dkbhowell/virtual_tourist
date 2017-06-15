@@ -10,14 +10,14 @@ import UIKit
 import MapKit
 import CoreData
 
-class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate {
-    
+class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, ImageCreatorDelegate {
     // MARK: Constants
     private let maxPhotos = 100
     
     // MARK: Properties
     var pin: Pin!
     let imageDownloader = ImageDownloader()
+    let imageCreator = ImageCreator()
     let dataController = (UIApplication.shared.delegate as! AppDelegate).dataController
     
     var urlsAndImages: [Any] {
@@ -51,6 +51,7 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate {
     // MARK: Outlets
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var titleLabel: UILabel!
     
 
     override func viewDidLoad() {
@@ -58,6 +59,9 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate {
         self.navigationController?.navigationBar.isHidden = false
         collectionView.dataSource = self
         imageDownloader.delegate = self
+        imageCreator.delegate = self
+        
+        titleLabel.text = pin.title
         
         print("Selecting pin")
         mapView.addAnnotation(pin)
@@ -65,8 +69,10 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate {
         
         print("Checking DB for Images")
         if doImagesExistInDb() {
+            print("Images Exist in DB")
             getDownloadedImages()
         } else {
+            print("No images in DB -- fetching from Flickr")
             getImagesFromFlickr()
         }
         
@@ -86,6 +92,11 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate {
         imageObject.image = data as NSData
         imageObject.pin = pin
         dataController.saveContext()
+    }
+    
+    // MARK: ImageCreatorDelegate (from DB)
+    func creator(_ creator: ImageCreator, didCreateImage image: UIImage) {
+        images.append(image)
     }
     
     // MARK: Helper Methods
@@ -136,10 +147,9 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate {
                     return
                 }
                 let timeAfterDB = Date()
-                self.processDbImages(photos: photos)
-                let timeAfterProcess = Date()
                 print("Time for DB Access: \(timeAfterDB.timeIntervalSince(timeStart))")
-                print("Time for Image Processing: \(timeAfterProcess.timeIntervalSince(timeAfterDB))")
+//                self.processPhotosNoUI(photos: photos)
+                self.processDbImages(photos: photos)
             }
         }
         do {
@@ -150,16 +160,46 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate {
         }
     }
     
-    private func processDbImages(photos: [Photo]) {
-        print("DB Hit -- loading Images from DB")
+    private func processPhotosNoUI(photos: [Photo]) {
+        print("Starting Image Processing (no UI)")
+        let startTime = Date()
         var count = 0
         for photo in photos {
             let data = photo.image! as Data
-            let image = UIImage(data: data)!
-            self.images.append(image)
+            if data.count > 800000 {
+                print("Large image in DB: \(sizeInKB(data: data))")
+            }
+            let _ = UIImage(data: data)!
             count += 1
         }
-        print("Loaded \(count) images from the DB")
+        let endTime = Date()
+        print("End Processing (no UI) \n--elapsed time: \(endTime.timeIntervalSince(startTime))\n--Photos: \(count)")
+    }
+    
+    private func processDbImages(photos: [Photo]) {
+        print("Starting Image Processing")
+        let startTime = Date()
+        var count = 0
+        var dataRay = [Data]()
+        for photo in photos {
+            let data = photo.image! as Data
+            if data.count > 800000 {
+                print("Image size in DB: \(sizeInKB(data: data))")
+            }
+            dataRay.append(data)
+            count += 1
+        }
+        imageCreator.createImages(data: dataRay)
+        let endTime = Date()
+        print("End Processing \n--elapsed time: \(endTime.timeIntervalSince(startTime))\n--Photos: \(count)")
+    }
+    
+    private func sizeInKB(data: Data) -> String {
+        let bcf = ByteCountFormatter()
+        bcf.allowedUnits = [.useKB]
+        bcf.countStyle = .file
+        
+        return bcf.string(fromByteCount: Int64(data.count))
     }
 }
 
