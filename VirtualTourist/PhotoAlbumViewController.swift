@@ -31,6 +31,7 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, UICol
         super.viewDidLoad()
         self.navigationController?.navigationBar.isHidden = false
         collectionView.dataSource = self
+        collectionView.delegate = self
         imageDownloader.delegate = self
         
         titleLabel.text = pin.title
@@ -81,6 +82,10 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, UICol
             print("Selected photo does not exist in array")
             return
         }
+        print("Photo Selected at index: \(indexPath.row)")
+        photos.remove(at: indexPath.row)
+        collectionView.deleteItems(at: [indexPath])
+        deleteFromDb(photo: photo)
     }
     
     // MARK: Helper Methods
@@ -92,6 +97,11 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, UICol
         photoObject.pin = pin
         dataController.saveContext()
         return photoObject
+    }
+    
+    private func deleteFromDb(photo: Photo) {
+        dataController.viewContext.delete(photo)
+        dataController.saveContext()
     }
     
     private func insertValue(image: Photo) {
