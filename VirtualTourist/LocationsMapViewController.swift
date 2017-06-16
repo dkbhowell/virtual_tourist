@@ -151,7 +151,9 @@ extension LocationsMapViewController: MKMapViewDelegate {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             pinView.canShowCallout = true
             pinView.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
-            let deleteButton = ClosureButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+            let deleteButton = ClosureButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+            deleteButton.layer.cornerRadius = 10
+            deleteButton.clipsToBounds = true
             deleteButton.backgroundColor = UIColor.red
             deleteButton.setTitle("X", for: .normal)
             deleteButton.touchUpAction = { [weak annotation, weak mapView] in
