@@ -41,15 +41,15 @@
                     </view>
                     <navigationItem key="navigationItem" title="Virtual Tourist" id="nxs-od-kSl">
                         <barButtonItem key="backBarButtonItem" title="OK" id="uPC-Oq-jWH"/>
-                        <barButtonItem key="leftBarButtonItem" systemItem="refresh" id="SXA-b3-pTL">
-                            <connections>
-                                <action selector="seeAllPinsTapped:" destination="BYZ-38-t0r" id="6QH-Xu-uDF"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="SkE-6N-RyL">
+                        <barButtonItem key="leftBarButtonItem" systemItem="trash" id="SkE-6N-RyL">
                             <color key="tintColor" red="1" green="0.094634552509999997" blue="0.087828515290000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <action selector="trashButtonTapped:" destination="BYZ-38-t0r" id="fcz-qG-9of"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="SXA-b3-pTL">
+                            <connections>
+                                <action selector="seeAllPinsTapped:" destination="BYZ-38-t0r" id="6QH-Xu-uDF"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
