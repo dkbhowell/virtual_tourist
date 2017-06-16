@@ -39,4 +39,26 @@ class DataController: NSObject {
             }
         }
     }
+    
+    func deleteAllPins() {
+        let context = persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<Pin>(entityName: Entity.Pin)
+        do {
+            let fetchedPins = try context.fetch(fetchRequest)
+            for pin in fetchedPins {
+                context.delete(pin)
+            }
+            saveContext()
+        } catch {
+            fatalError("Core Data: Fetch Request to delete all pins failed")
+        }
+    }
+}
+
+
+extension DataController {
+    struct Entity {
+        static let Pin = "Pin"
+        static let Photo = "Photo"
+    }
 }

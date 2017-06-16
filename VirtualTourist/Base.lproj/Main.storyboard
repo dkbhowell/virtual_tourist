@@ -41,9 +41,16 @@
                     </view>
                     <navigationItem key="navigationItem" id="nxs-od-kSl">
                         <barButtonItem key="backBarButtonItem" title="OK" id="uPC-Oq-jWH"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="SkE-6N-RyL">
+                            <color key="tintColor" red="1" green="0.094634552509999997" blue="0.087828515290000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="trashButtonTapped:" destination="BYZ-38-t0r" id="fcz-qG-9of"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="GUV-ym-fDx" id="V0L-7j-j2C"/>
+                        <outlet property="trashButton" destination="SkE-6N-RyL" id="VSi-eS-kbt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -25,12 +25,37 @@ class LocationsMapViewController: UIViewController {
     
     // MARK: Outlets
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var trashButton: UIBarButtonItem!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.isHidden = true
+//        self.navigationController?.navigationBar.isHidden = true
         configureMapView()
     }
+    
+    @IBAction func trashButtonTapped(_ sender: UIBarButtonItem) {
+        guard let pins = mapView.annotations as? [Pin] else {
+            print("Could not get annotations from map as Pin instances")
+            return
+        }
+        if pins.count > 0 {
+            let alert = UIAlertController(title: "Delete All Pins?", message: "This will delete all pins, and all images associated with those pins. Continue?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { (action) in
+                print("Deleting all pins")
+                self.dataController.deleteAllPins()
+                self.mapView.removeAnnotations(self.mapView.annotations)
+            }))
+            alert.addAction(UIAlertAction(title: "Nope", style: .default, handler: { (action) in
+                print("Do not delete all pins")
+            }))
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "No Pins To Delete", message: "You cannot delete pins, because you don't have any! Long press on the screen to drop a pin.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     
     // MARK: Helper Functions
     
