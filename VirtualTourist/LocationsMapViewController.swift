@@ -29,7 +29,6 @@ class LocationsMapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.navigationController?.navigationBar.isHidden = true
         configureMapView()
     }
     
@@ -56,6 +55,9 @@ class LocationsMapViewController: UIViewController {
         }
     }
     
+    @IBAction func seeAllPinsTapped(_ sender: UIBarButtonItem) {
+        mapView.showAnnotations(mapView.annotations, animated: true)
+    }
     
     // MARK: Helper Functions
     
