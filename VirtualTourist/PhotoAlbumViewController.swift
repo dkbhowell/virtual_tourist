@@ -74,12 +74,6 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
         self.navigationController?.navigationBar.isHidden = isPortrait ? false : true
     }
     
-//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-//        print("ViewWillTransitionToSize")
-////        configCollectionView()
-//        collectionView.collectionViewLayout.invalidateLayout()
-//    }
-    
     // MARK: Actions
     @IBAction func newCollectionTapped(_ sender: Any) {
         print("Fetching new collection of photos for pin...")
@@ -94,8 +88,8 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
     // MARK: ImageDownloaderDelegate
     func downloader(_ downloader: ImageDownloader, didDownloadImage image: UIImage) {
         print("Image Downloaded")
-        images.insert(image, at: 0)
-        images.remove(at: images.endIndex-1)
+        insertValue(element: image, array: &images)
+        
         // associate with pin
         let data = UIImagePNGRepresentation(image)!
         let imageObject = NSEntityDescription.insertNewObject(forEntityName: "Photo", into: dataController.viewContext) as! Photo
@@ -118,6 +112,28 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
     }
     
     // MARK: Helper Methods
+    
+    private func insertValue<T>(element: T, array: inout [T?]) {
+        let insertIndex = getFirstNilIndex(fromArray: array)
+        array.insert(element, at: insertIndex)
+        
+        if let lastElement = array.last, let _ = lastElement {
+            // the last element is a non-nil value of type T
+        } else {
+            // the last element is nil
+            array.remove(at: array.endIndex - 1)
+        }
+    }
+    
+    // returns index of first nil object in array, or the end index if the array does not contain any nil values
+    private func getFirstNilIndex<T>(fromArray array: [T?]) -> Int {
+        for (index, item) in array.enumerated() {
+            if item == nil {
+                return index
+            }
+        }
+        return array.endIndex
+    }
     
     private func configCollectionView() {
         guard let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else {
