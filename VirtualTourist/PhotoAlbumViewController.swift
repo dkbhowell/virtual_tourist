@@ -20,14 +20,7 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
     let imageCreator = ImageCreator()
     let dataController = (UIApplication.shared.delegate as! AppDelegate).dataController
     
-    var images = [UIImage?]() {
-        didSet {
-            executeOnMain {
-                //                print("Reloading collection view from images didSet")
-                self.collectionView.reloadData()
-            }
-        }
-    }
+    var images = [UIImage?]()
     
     // MARK: Outlets
     @IBOutlet weak var mapView: MKMapView!
@@ -77,30 +70,21 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
     // MARK: Actions
     @IBAction func newCollectionTapped(_ sender: Any) {
         print("Fetching new collection of photos for pin...")
-        // Remove all photos from UI
         images.removeAll()
-        // Delete all photos from DB
         deleteAllPhotos()
-        // Fetch new photos
         getImagesFromFlickr()
     }
     
     // MARK: ImageDownloaderDelegate
     func downloader(_ downloader: ImageDownloader, didDownloadImage image: UIImage) {
         print("Image Downloaded")
-        insertValue(element: image, array: &images)
-        
-        // associate with pin
-        let data = UIImagePNGRepresentation(image)!
-        let imageObject = NSEntityDescription.insertNewObject(forEntityName: "Photo", into: dataController.viewContext) as! Photo
-        imageObject.image = data as NSData
-        imageObject.pin = pin
-        dataController.saveContext()
+        insertValue(image: image)
+        saveImageToDb(image: image)
     }
     
     // MARK: ImageCreatorDelegate (from DB)
     func creator(_ creator: ImageCreator, didCreateImage image: UIImage) {
-        images.append(image)
+        insertValue(image: image)
     }
     
     // MARK: UICollectionViewDelegate 
@@ -113,11 +97,21 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
     
     // MARK: Helper Methods
     
-    private func insertValue<T>(element: T, array: inout [T?]) {
-        if let nilIndex = array.index(where: { $0 == nil} ) {
-            array[nilIndex] = element
+    private func saveImageToDb(image: UIImage) {
+        let data = UIImagePNGRepresentation(image)!
+        let imageObject = NSEntityDescription.insertNewObject(forEntityName: "Photo", into: dataController.viewContext) as! Photo
+        imageObject.image = data as NSData
+        imageObject.pin = pin
+        dataController.saveContext()
+    }
+    
+    private func insertValue(image: UIImage) {
+        if let nilIndex = images.index(where: { $0 == nil} ) {
+            images[nilIndex] = image
+            collectionView.reloadItems(at: [IndexPath(row: nilIndex, section: 0)])
         } else {
-            array.append(element)
+            images.append(image)
+            collectionView.insertItems(at: [IndexPath(row: (images.endIndex - 1), section: 0)])
         }
     }
     
@@ -144,6 +138,7 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
             case .success(let urls):
                 print("Successfully retreived \(urls.count) image URLs")
                 self.images = [UIImage?](repeating: nil, count: urls.count)
+                self.collectionView.reloadData()
                 self.imageDownloader.downloadImages(urls: urls)
             case .failure(let error):
                 print(error)
@@ -196,16 +191,13 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
         fetchRequest.predicate = predicate
         let timeStart = Date()
         let asyncFetch = NSAsynchronousFetchRequest(fetchRequest: fetchRequest) { (fetchResult) in
-            executeOnMain {
-                guard let photos = fetchResult.finalResult, photos.count > 0 else {
-                    print("Async Fetch: No results")
-                    return
-                }
-                let timeAfterDB = Date()
-                print("Time for DB Access: \(timeAfterDB.timeIntervalSince(timeStart))")
-//                self.processPhotosNoUI(photos: photos)
-                self.processDbImages(photos: photos)
+            guard let photos = fetchResult.finalResult, photos.count > 0 else {
+                print("Async Fetch: No results")
+                return
             }
+            let timeAfterDB = Date()
+            print("Time for DB Access: \(timeAfterDB.timeIntervalSince(timeStart))")
+            self.processDbImages(photos: photos)
         }
         do {
             let fetchedPhotosResult = try dataController.viewContext.execute(asyncFetch)
@@ -213,22 +205,6 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
         } catch {
             fatalError("Core Data: Error fetching a photo from the database")
         }
-    }
-    
-    private func processPhotosNoUI(photos: [Photo]) {
-        print("Starting Image Processing (no UI)")
-        let startTime = Date()
-        var count = 0
-        for photo in photos {
-            let data = photo.image! as Data
-            if data.count > 800000 {
-                print("Large image in DB: \(sizeInKB(data: data))")
-            }
-            let _ = UIImage(data: data)!
-            count += 1
-        }
-        let endTime = Date()
-        print("End Processing (no UI) \n--elapsed time: \(endTime.timeIntervalSince(startTime))\n--Photos: \(count)")
     }
     
     private func processDbImages(photos: [Photo]) {
@@ -244,6 +220,8 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, Image
             dataRay.append(data)
             count += 1
         }
+        images = [UIImage?](repeating: nil, count: dataRay.count)
+        collectionView.reloadData()
         imageCreator.createImages(data: dataRay)
         let endTime = Date()
         print("End Processing \n--elapsed time: \(endTime.timeIntervalSince(startTime))\n--Photos: \(count)")
@@ -267,13 +245,12 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let count = images.count
-//        let count = imagesAvailable ? images.count : imageUrls.count
         print("numberOfItemsInSection: \(count)")
         return count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+        print("cellForItemAt: \(indexPath.row)")
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentefier, for: indexPath) as! ImageCollectionViewCell
         cell.backgroundColor = UIColor.lightGray
         
