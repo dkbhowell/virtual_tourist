@@ -12,7 +12,7 @@ import CoreData
 
 class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, UICollectionViewDelegate {
     // MARK: Constants
-    private let maxPhotos = 100
+    private let maxPhotos = 80
     
     // MARK: Properties
     var pin: Pin!
@@ -136,9 +136,10 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, UICol
             switch result {
             case .success(let urls):
                 print("Successfully retreived \(urls.count) image URLs")
-                self.photos = [Photo?](repeating: nil, count: urls.count)
+                let newUrlArray = Array(urls.prefix(self.maxPhotos))
+                self.photos = [Photo?](repeating: nil, count: newUrlArray.count)
                 self.collectionView.reloadData()
-                self.imageDownloader.downloadImages(urls: urls)
+                self.imageDownloader.downloadImages(urls: newUrlArray)
             case .failure(let error):
                 print(error)
             }
@@ -206,26 +207,6 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, UICol
             fatalError("Core Data: Error fetching a photo from the database")
         }
     }
-    
-//    private func processDbImages(photos: [Photo]) {
-//        print("Starting Image Processing")
-//        let startTime = Date()
-//        var count = 0
-//        var dataRay = [Data]()
-//        for photo in photos {
-//            let data = photo.image! as Data
-//            if data.count > 800000 {
-//                print("Image size in DB: \(sizeInKB(data: data))")
-//            }
-//            dataRay.append(data)
-//            count += 1
-//        }
-//        images = [UIImage?](repeating: nil, count: dataRay.count)
-//        collectionView.reloadData()
-//        imageCreator.createImages(data: dataRay)
-//        let endTime = Date()
-//        print("End Processing \n--elapsed time: \(endTime.timeIntervalSince(startTime))\n--Photos: \(count)")
-//    }
     
     private func sizeInKB(data: Data) -> String {
         let bcf = ByteCountFormatter()
