@@ -274,7 +274,7 @@ extension PhotoAlbumViewController:  UIViewControllerPreviewingDelegate {
     }
     
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
-        show(viewControllerToCommit, sender: self)
+        self.navigationController?.pushViewController(viewControllerToCommit, animated: true)
     }
     
 }

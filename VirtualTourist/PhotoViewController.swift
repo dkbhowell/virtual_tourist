@@ -19,14 +19,16 @@ class PhotoViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.isHidden = false
-        
         guard let imageData = (photo.image as Data?), let image = UIImage(data: imageData) else {
             print("No Image to Display")
             return
         }
         
         imageView.image = image
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.navigationBar.isHidden = false
     }
 
 }
