@@ -56,7 +56,13 @@ class LocationsMapViewController: UIViewController {
     }
     
     @IBAction func seeAllPinsTapped(_ sender: UIBarButtonItem) {
-        mapView.showAnnotations(mapView.annotations, animated: true)
+        if mapView.annotations.count > 0 {
+            mapView.showAnnotations(mapView.annotations, animated: true)
+        } else {
+            let wholeWorldRegion = MKCoordinateRegion(center: centerOfUnitedStates, span: wholeWorldSpan)
+            mapView.setRegion(wholeWorldRegion, animated: true)
+        }
+        
     }
     
     // MARK: Helper Functions
