@@ -252,7 +252,10 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
 
 extension PhotoAlbumViewController:  UIViewControllerPreviewingDelegate {
     func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
-        guard let indexPath = collectionView.indexPathForItem(at: location), let cell = collectionView.cellForItem(at: indexPath) else {
+        
+        let newPoint = self.view.convert(location, to: collectionView)
+        
+        guard let indexPath = collectionView.indexPathForItem(at: newPoint), let cell = collectionView.cellForItem(at: indexPath) else {
             print("No Index Path for preview")
             return nil
         }
@@ -261,6 +264,8 @@ extension PhotoAlbumViewController:  UIViewControllerPreviewingDelegate {
             print("No controller for preview")
             return nil
         }
+        
+        print("Force Touch recognized for row: \(indexPath.row)")
         
         photoVC.photo = photos[indexPath.row]
         photoVC.preferredContentSize = CGSize(width: 0, height: 600)
