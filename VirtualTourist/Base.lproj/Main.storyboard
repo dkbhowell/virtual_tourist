@@ -142,7 +142,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Ycd-aQ-mzr">
-                        <barButtonItem key="backBarButtonItem" title="Back" id="bnm-PP-TxJ"/>
+                        <barButtonItem key="backBarButtonItem" title="Album" id="bnm-PP-TxJ"/>
                     </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="pUf-Ml-rz2" id="xcF-4z-6cy"/>
@@ -153,6 +153,39 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZaI-hJ-na9" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1764" y="37.331334332833585"/>
+        </scene>
+        <!--Photo View Controller-->
+        <scene sceneID="9sE-3b-5AW">
+            <objects>
+                <viewController storyboardIdentifier="PhotoViewController" id="Ukc-WP-jcV" customClass="PhotoViewController" customModule="VirtualTourist" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="zw2-Nc-FzJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="fVK-wM-1Th"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pqn-kx-enZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="07j-ak-7RU">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="fVK-wM-1Th" firstAttribute="top" secondItem="07j-ak-7RU" secondAttribute="bottom" id="B13-Xx-JYB"/>
+                            <constraint firstAttribute="trailing" secondItem="07j-ak-7RU" secondAttribute="trailing" id="BsQ-rM-kY1"/>
+                            <constraint firstItem="07j-ak-7RU" firstAttribute="top" secondItem="zw2-Nc-FzJ" secondAttribute="bottom" id="LGn-aU-DVc"/>
+                            <constraint firstItem="07j-ak-7RU" firstAttribute="leading" secondItem="pqn-kx-enZ" secondAttribute="leading" id="z5b-bD-KSm"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="n49-Nm-Lix"/>
+                    <connections>
+                        <outlet property="imageView" destination="07j-ak-7RU" id="1iy-Aa-FDh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JVr-mN-oLF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2516" y="35"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="QMJ-m4-S1P">

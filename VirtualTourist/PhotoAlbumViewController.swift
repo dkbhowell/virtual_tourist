@@ -34,6 +34,12 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, UICol
         collectionView.delegate = self
         imageDownloader.delegate = self
         
+        if traitCollection.forceTouchCapability == .available {
+            registerForPreviewing(with: self, sourceView: view)
+        } else {
+            print("3D Touch Not Available")
+        }
+        
         titleLabel.text = pin.title
         
         mapView.addAnnotation(pin)
@@ -243,3 +249,42 @@ extension PhotoAlbumViewController: UICollectionViewDataSource {
         return cell
     }
 }
+
+extension PhotoAlbumViewController:  UIViewControllerPreviewingDelegate {
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, viewControllerForLocation location: CGPoint) -> UIViewController? {
+        guard let indexPath = collectionView.indexPathForItem(at: location), let cell = collectionView.cellForItem(at: indexPath) else {
+            print("No Index Path for preview")
+            return nil
+        }
+        
+        guard let photoVC = storyboard?.instantiateViewController(withIdentifier: "PhotoViewController") as? PhotoViewController else {
+            print("No controller for preview")
+            return nil
+        }
+        
+        photoVC.photo = photos[indexPath.row]
+        photoVC.preferredContentSize = CGSize(width: 0, height: 600)
+        previewingContext.sourceRect = cell.frame
+        return photoVC
+    }
+    
+    func previewingContext(_ previewingContext: UIViewControllerPreviewing, commit viewControllerToCommit: UIViewController) {
+        show(viewControllerToCommit, sender: self)
+    }
+    
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
