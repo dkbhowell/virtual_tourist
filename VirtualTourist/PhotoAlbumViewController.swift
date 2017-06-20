@@ -25,6 +25,7 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, UICol
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var newCollectionButton: UIButton!
     
     // MARK: VC Lifecycle
     override func viewDidLoad() {
@@ -33,6 +34,8 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, UICol
         collectionView.dataSource = self
         collectionView.delegate = self
         imageDownloader.delegate = self
+        
+        self.newCollectionButton.isEnabled = false
         
         if traitCollection.forceTouchCapability == .available {
             registerForPreviewing(with: self, sourceView: view)
@@ -71,6 +74,7 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, UICol
     @IBAction func newCollectionTapped(_ sender: Any) {
         print("Fetching new collection of photos for pin...")
         photos.removeAll()
+        collectionView.reloadData()
         deleteAllPhotos()
         getImagesFromFlickr()
     }
@@ -80,6 +84,12 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, UICol
         print("Image Downloaded")
         let photo = saveImageToDb(image: image)
         insertValue(image: photo)
+    }
+    
+    func downloader(_ downloader: ImageDownloader, didFinishDownloadingImages: Bool) {
+        if didFinishDownloadingImages {
+            self.newCollectionButton.isEnabled = true
+        }
     }
     
     // MARK: UICollectionViewDelegate 
@@ -205,6 +215,7 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, UICol
             print("Time for DB Access: \(timeAfterDB.timeIntervalSince(timeStart))")
             self.photos = photos
             self.collectionView.reloadData()
+            self.newCollectionButton.isEnabled = true
         }
         do {
             let fetchedPhotosResult = try dataController.viewContext.execute(asyncFetch)

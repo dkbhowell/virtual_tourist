@@ -10,4 +10,5 @@ import UIKit
 
 protocol ImageDownloaderDelegate: class {
     func downloader(_ downloader: ImageDownloader, didDownloadImage image: UIImage)
+    func downloader(_ downloader: ImageDownloader, didFinishDownloadingImages: Bool)
 }
