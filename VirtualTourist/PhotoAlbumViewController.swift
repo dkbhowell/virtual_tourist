@@ -73,6 +73,7 @@ class PhotoAlbumViewController: UIViewController, ImageDownloaderDelegate, UICol
     // MARK: Actions
     @IBAction func newCollectionTapped(_ sender: Any) {
         print("Fetching new collection of photos for pin...")
+        newCollectionButton.isEnabled = false
         photos.removeAll()
         collectionView.reloadData()
         deleteAllPhotos()
